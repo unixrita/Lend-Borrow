@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>登入/註冊</title>
+  </head>
+  <body style="background-image:url(img/login2.png);background-repeat: no-repeat;background-size: cover">
+    
+    <section class="login-content">
+      <div class="logo" style="margin-bottom: 10px">
+        <h1><b>借 吧 !</b></h1>
+      </div>
+      <div class="login-box" style="height: 530px;width: 300px;border-radius: 30px">
+        <form class="login-form">
+			<h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i><font face="微軟正黑體"><b>登入</b></font></h3>
+          
+      
+          <div class="form-group">
+            <label class="control-label">帳號<font color="red" id="account"></font></label>
+            <input class="form-control" type="text" placeholder="請輸入Email" id="Account" autofocus required>
+          </div>
+          <div class="form-group">
+            <label class="control-label">密碼<font color="red" id="login_password"></font></label>
+            <input class="form-control" type="password" placeholder="請輸入密碼" id="Login_password" required>
+          </div>
+          <div class="form-group">
+            <div class="utility">
+              <div class="animated-checkbox">
+                <label>
+                  <input type="checkbox"><span class="label-text">保持登入</span>
+                </label>
+              </div>
+				<p class="semibold-text mb-2"><a href="#" data-toggle="flip"><font face="微軟正黑體">註冊帳號</font></a></p>
+            </div>
+          </div>
+          <div class="form-group btn-container">
+			  <button type="button" class="btn btn-primary btn-block" onclick="login();"><i class="fa fa-sign-in fa-lg fa-fw"></i><font face="微軟正黑體">登入</font></button>
+          </div>
+        </form>
+        <form class="forget-form" action="index_log.html" >
+          <h3 class="login-head"><i class="fa fa-lg fa-fw fa-address-card"></i> 註冊帳號</h3>
+          
+          <div class="form-group">
+            <label class="control-label">帳號<font color="red" id="Email"></font></label>
+            <input class="form-control" type="text" id="email" placeholder="請輸入Email">
+          </div>
+            <div class="form-group">
+            <label class="control-label">密碼<font color="red" id="Password"></font></label>
+            <input class="form-control" type="password" id="register_password" placeholder="請輸入密碼">
+            </div>
+            <div class="form-group">
+            <label class="control-label">確認密碼<font color="red" id="Ckpassword"></font></label>
+            <input class="form-control" type="password" id="register_ckpassword" placeholder="請再次輸入密碼">
+            </div>
+            <div class="form-group">
+            <label class="control-label">暱稱<font color="red" id="Nickname"></font></label>
+            <input class="form-control" type="text" id="register_nickname" placeholder="請輸入暱稱">
+            </div>
+			 
+		
+          
+          <div class="form-group btn-container">
+			  <button type="button" class="btn btn-primary btn-block" onclick="register()"><i class="fa fa-address-card fa-lg fa-fw"></i><font face="微軟正黑體">註冊</font></button>
+          </div>
+          <div class="form-group mt-3">
+            <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> 返回登入</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script type="text/javascript">
+      // Login Page Flipbox control
+      $('.login-content [data-toggle="flip"]').click(function() {
+      	$('.login-box').toggleClass('flipped');
+      	return false;
+      });
+    </script>
+    
+    
+    
+    
+		<script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyAFQ229Rdz3lMMDXl8lKzs4gO_pfh-JH3o",
+        authDomain: "hackathon-7e6e5.firebaseapp.com",
+        databaseURL: "https://hackathon-7e6e5.firebaseio.com",
+        projectId: "hackathon-7e6e5",
+        storageBucket: "hackathon-7e6e5.appspot.com",
+        messagingSenderId: "958614532541",
+        appId: "1:958614532541:web:284f4fcf1d48250f7b22d4",
+        measurementId: "G-SWSGNCDFN5"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+      var db = firebase.firestore();
+		
+    //*************************************登入START****************************************
+    function login(){
+        var account = document.getElementById("Account").value;
+        var login_password = document.getElementById("Login_password").value;
+        console.log(account);
+		console.log(login_password);
+        var ref = db.collection("user");
+        var tag_login = 0;
+        
+        ref.get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                console.log(doc.id);
+                if(doc.id == account && doc.data().password == login_password){
+                    tag_login = 2;
+                    window.sessionStorage.setItem("account", account);
+                    var userAccount = window.sessionStorage.getItem("account");
+				    window.location.href="index_log.html";
+                }
+                else if(doc.id == account){
+                    tag_login = 2;
+                    if(doc.data().password != login_password && login_password){
+                        document.getElementById("login_password").innerHTML="&nbsp&nbsp&nbsp輸入密碼不正確";
+                    }
+                }
+            });
+            if(account && tag_login != 2){
+                document.getElementById("account").innerHTML="&nbsp&nbsp&nbsp此帳號尚未註冊";
+            }
+        });
+    }
+    //*************************************登入END****************************************
+    //*************************************註冊start****************************************
+    function register(){
+        var account = document.getElementById("email").value;
+        var password = document.getElementById("register_password").value;
+        var ckpassword = document.getElementById("register_ckpassword").value;
+        var nickname = document.getElementById("register_nickname").value;
+        
+        var tag_registered = 0;
+        var account_checked = 0;
+        
+        if(!account){
+            document.getElementById("Email").innerHTML="&nbsp&nbsp&nbsp此欄位不得為空";
+            tag_registered = 1;
+             check_registered(nickname, account, password, ckpassword, tag_registered);
+        }
+        else{
+            var ref = db.collection('user');
+            ref.get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(doc.id == account){
+                        document.getElementById("Email").innerHTML="&nbsp&nbsp&nbsp此帳號已註冊過!";
+                        tag_registered = 2;
+                    }
+                });
+                account_checked = 1;
+                check_registered(nickname, account, password, ckpassword, tag_registered);
+            });
+            if(document.getElementById("Email").innerHTML!="&nbsp&nbsp&nbsp此帳號已註冊過!"){
+                document.getElementById("Email").innerHTML="";
+                tag_registered = 0;
+                if(account_checked == 1){
+                    check_registered(nickname, account, password, ckpassword, tag_registered);    
+                }   
+            }
+        }
+        
+    }
+    function check_registered(nickname, account, password, ckpassword, tag_registered){
+    
+    if(!nickname || !password || !ckpassword || password != ckpassword || tag_registered != 0){
+        
+        if(!password){
+            document.getElementById("Password").innerHTML="&nbsp&nbsp&nbsp此欄位不得為空";
+        }
+        else{
+            document.getElementById("Password").innerHTML="";
+        }
+        
+        if(!ckpassword){
+            document.getElementById("Ckpassword").innerHTML="&nbsp&nbsp&nbsp此欄位不得為空";
+        }
+        else if(password != ckpassword){
+            document.getElementById("Ckpassword").innerHTML="&nbsp&nbsp&nbsp確認密碼不正確";
+        }
+        else{
+            document.getElementById("Ckpassword").innerHTML="";
+        }
+        if(!nickname){
+            document.getElementById("Nickname").innerHTML="&nbsp&nbsp&nbsp此欄位不得為空";
+        }
+        else{
+            document.getElementById("Nnickname").innerHTML="";
+        }
+    }
+    else if(tag_registered == 0){
+        
+        window.localStorage.setItem("nickname", nickname);
+        window.localStorage.setItem("account", account);
+        window.localStorage.setItem("password", password);
+
+
+        window.setTimeout("window.location.href='firebase_login.html'",2000); //延遲兩秒跳轉
+    }
+}
+    //**************************************註冊end*****************************************
+        
+</script>
+  </body>
+</html>

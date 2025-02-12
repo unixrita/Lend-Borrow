@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <title>Cards - Vali Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAFQ229Rdz3lMMDXl8lKzs4gO_pfh-JH3o",
+    authDomain: "hackathon-7e6e5.firebaseapp.com",
+    databaseURL: "https://hackathon-7e6e5.firebaseio.com",
+    projectId: "hackathon-7e6e5",
+    storageBucket: "hackathon-7e6e5.appspot.com",
+    messagingSenderId: "958614532541",
+    appId: "1:958614532541:web:284f4fcf1d48250f7b22d4",
+    measurementId: "G-SWSGNCDFN5"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  var db = firebase.firestore();
+  var ref = db.collection('product').doc('female').collection('pants');    
+  ref.get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {  
+           console.log(doc.id, " => ", doc.data());
+        }); 
+    });               
+</script>
+    <script>
+        var type = window.localStorage.getItem("doc_name");
+        var gen = window.localStorage.getItem("gender"); 
+            console.log(gen);
+        var cate = window.localStorage.getItem("category");
+//        
+//        var account =window.sessionStorage.getItem("account");
+        
+        var ref = db.collection('product').doc(gen).collection(cate); 
+        ref.get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                if(doc.data().read == false){
+                    db.collection("product").doc(gen).collection(cate).doc(doc.picture).update({
+                        read: true
+                    })
+                    .then(() => console.log('Document successfully written!'))
+                    .catch(error => console.error('Error writing document: ', error))
+                }
+            });
+        });
+      </script>
+      
+      <script>
+        var arr = [];
+        var db = firebase.firestore();
+
+        var ref = db.collection('product').doc(gen).collection(cate);
+        ref.get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                arr.push(doc.id);
+            });
+            query_product();
+        });
+        
+        function query_product(){
+            for(var i=0; i<arr.length; i++){
+                var tag = arr[i];
+                product(tag)
+            }
+        }
+         
+         
+        function product(tag){
+            var ref = db.collection("product");
+                ref.get().then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        if(doc.id == tag){
+                            var id = doc.id;
+                            var picture = doc.data().picture;
+                            
+                        }
+                    });
+                });
+        }       
+            
+            var ref2 = db.collection("product").doc(gen).collection(cate).doc(type);
+            ref2.onSnapshot(doc => { 
+                var picture = doc.data().picture;
+                var name = doc.data().name;
+                var price = doc.data().price;
+                var introduction = doc.data().introduction;
+                
+                var belong = doc.data().belong;
+                lender = belong;
+                
+                var size = doc.data().size;
+                document.getElementById('goods').src = picture; 
+                document.getElementById('name').append(name);
+                document.getElementById('price').append(price);
+                document.getElementById('introduction').append(introduction);
+                 
+                document.getElementById('belong').append(belong); 
+                window.localStorage.setItem("belong", belong);
+                document.getElementById('name').append(size);
+            });
+          
+          var lender = window.localStorage.getItem('belong');
+          var ref3 = db.collection("user").doc(lender);
+          
+            ref3.onSnapshot(doc => { 
+                var picture2 = doc.data().picture;
+                var nickname = doc.data().nickname;
+                var phonenumber = doc.data().phonenumber;
+                var address = doc.data().address;
+                document.getElementById('lender').src = picture2; 
+                document.getElementById('nickname1').append(nickname);
+                document.getElementById('phone').append(phonenumber);
+               
+            });
+          
+             
+        
+      </script>
+
+    <style>
+        .goodsIntroduction_card {
+            width: 200%;
+            height: 120%;
+        }
+        .goodsImg_div{
+            float: left;
+            width: 50%;
+        }
+        .goods_img{
+            width: 75%;
+            
+        }
+        .lender_img{
+            width: 15%;
+        }
+        .lender_div{
+            float: left;
+        }
+        p {font-family: 微軟正黑體}
+        button{
+            width: 80px;
+            height: 40px;
+            
+        
+    </style>
+    
+  </head>
+  <body class="app sidebar-mini rtl">
+    <!-- Navbar-->
+     <header class="app-header"><a class="app-header__logo" href="index_log.html"><b>借 吧  !</b></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <li class="app-search">
+          <input class="app-search__input" type="search" placeholder="搜尋">
+          <button class="app-search__button"><i class="fa fa-search"></i></button>
+        </li>
+     
+        
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right">
+            <li><a class="dropdown-item" href="personal.html">
+				<i class="fa fa-user fa-lg"></i><font face="微軟正黑體"> 個人資訊</font></a></li>
+            <li><a class="dropdown-item" onclick="logout()">
+				<i class="fa fa-sign-out fa-lg"></i><font face="微軟正黑體">登出</font></a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+		
+      <div class="app-sidebar__user"><img id="picture" class="app-sidebar__user-avatar" width="35%" alt="User Image">
+        <div>
+         <font face="微軟正黑體">
+          <b><p class="app-sidebar__user-name" id="nickname"></p></b>
+          <p class="app-sidebar__user-designation">開始借吧~</p>
+			</font>
+        </div>
+      </div>
+       
+      <ul class="app-menu">
+        <li><a class="app-menu__item" href="index_log.html"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label"><font face="微軟正黑體">首頁</font></span></a></li>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users "></i><span class="app-menu__label"><font face="微軟正黑體">關於「借吧!」</font></span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="index_log.html"><i class="icon fa fa-circle-o"></i><font face="微軟正黑體">「借吧!」發想點</font></a></li>
+            <li><a class="treeview-item" href="index_log.html"><i class="icon fa fa-circle-o"></i> <font face="微軟正黑體">服務對象/項目</font></a></li>
+            <li><a class="treeview-item" href="index_log.html"><i class="icon fa fa-circle-o"></i>「自動消毒櫃」佈點地圖</a></li>
+  
+          </ul>
+        </li>
+        <li><a class="app-menu__item" href="upload.html"><i class="app-menu__icon fa fa-hand-o-right"></i><span class="app-menu__label"><font face="微軟正黑體">出租物品吧!</font></span></a></li>
+        <li><a class="app-menu__item" href="goods.html"><i class="app-menu__icon fa fa-hand-o-right"></i><span class="app-menu__label"><font face="微軟正黑體">租借物品吧!</font></span></a></li>
+        <li><a class="app-menu__item" href="personal.html"><i class="app-menu__icon fa fa-user-circle-o"></i><span class="app-menu__label"><font face="微軟正黑體">個人資訊</font></span></a></li>
+        
+      </ul>
+    </aside>
+    <main class="app-content">
+  
+      <div class="row">
+          <div class="tile goodsIntroduction_card">
+            <div class="goodsImg_div">
+            <img id="goods" src="" class="goods_img">
+            <div class="lender_div" style="margin-top: 20px"><p style="font-size: 30px;  margin-left: 30px">出租者資訊</p>
+            <div class="row">
+                <img id="lender" src="" class="app-sidebar__user-avatar" width="15%" style="margin-left: 10%">
+                &nbsp;&nbsp;&nbsp;
+                <p class="app-sidebar__user-name" style="font-size: 20px; margin-top: 10px;" id="belong"></p>
+            </div>
+            <p class="app-sidebar__user-designation" style="font-size: 20px; margin-left: 35px" id="nickname1">暱稱：</p>
+            <p style="font-size: 20px; margin-left: 35px" id="phone">聯絡方式：</p>
+            
+       </div>
+            </div>
+              <div class="tile-body">
+                  <p style="font-size: 35px" id="name"></p>
+                  <p style="font-size: 25px" id="price">$</p>
+                  <p style="font-size: 15px" id="introduction">
+                      
+                  </p>
+                  <a href="goods_borrow.html"><button type="button" class="btn btn-primary" style="margin-top: 300px"><p>我要租借</p></button></a>
+                  
+              </div>
+                
+          </div>
+      </div>
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <!-- Page specific javascripts-->
+    <!-- Google analytics script-->
+    <script type="text/javascript">
+      if(document.location.hostname == 'pratikborsadiya.in') {
+      	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      	ga('create', 'UA-72504830-1', 'auto');
+      	ga('send', 'pageview');
+      }
+    </script>
+     <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+    <script>
+	
+		 var firebaseConfig = {
+        apiKey: "AIzaSyAFQ229Rdz3lMMDXl8lKzs4gO_pfh-JH3o",
+        authDomain: "hackathon-7e6e5.firebaseapp.com",
+        databaseURL: "https://hackathon-7e6e5.firebaseio.com",
+        projectId: "hackathon-7e6e5",
+        storageBucket: "hackathon-7e6e5.appspot.com",
+        messagingSenderId: "958614532541",
+        appId: "1:958614532541:web:284f4fcf1d48250f7b22d4",
+        measurementId: "G-SWSGNCDFN5"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+		
+		
+      var db = firebase.firestore();
+	var account = window.sessionStorage.getItem("account");
+	  var ref = db.collection('user').doc(account);
+      ref.onSnapshot(doc => { 
+		  var nickname = doc.data().nickname;
+		  var picture = doc.data().picture;
+		  console.log(picture);
+		  if(picture != null){ //如果有圖片才顯示
+            document.getElementById('picture').src = picture;
+        }
+		   document.getElementById('nickname').textContent = nickname;
+		  });
+	  
+	</script>
+   	<script>
+	if(window.sessionStorage.getItem("account") == null){ //是否登入
+        window.location.href="../index.html";
+      }   
+	</script>
+  
+  
+  <script>
+        function logout(){//登出
+            window.sessionStorage.setItem("account", null);
+            window.localStorage.clear();
+            
+            window.location.href = "../index.html";
+      }  
+  </script>
+  </body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <title>Blank Page - Vali Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="app sidebar-mini rtl">
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="index_log.html"><b>借 吧  !</b></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <li class="app-search">
+          <input class="app-search__input" type="search" placeholder="搜尋">
+          <button class="app-search__button"><i class="fa fa-search"></i></button>
+        </li>
+     
+        
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right">
+            <li><a class="dropdown-item" href="personal.html">
+				<i class="fa fa-user fa-lg"></i><font face="微軟正黑體"> 個人資訊</font></a></li>
+            <li><a class="dropdown-item" onclick="logout()">
+				<i class="fa fa-sign-out fa-lg"></i><font face="微軟正黑體">登出</font></a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+		
+      <div class="app-sidebar__user"><img id="picture" class="app-sidebar__user-avatar" width="35%" alt="User Image">
+        <div>
+         <font face="微軟正黑體">
+          <b><p class="app-sidebar__user-name" id="nickname"></p></b>
+          <p class="app-sidebar__user-designation">開始借吧~</p>
+			</font>
+        </div>
+      </div>
+       
+      <ul class="app-menu">
+        <li><a class="app-menu__item" href="index_log.html"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label"><font face="微軟正黑體">首頁</font></span></a></li>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users "></i><span class="app-menu__label"><font face="微軟正黑體">關於「借吧!」</font></span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="index_log.html"><i class="icon fa fa-circle-o"></i><font face="微軟正黑體">「借吧!」發想點</font></a></li>
+            <li><a class="treeview-item" href="index_log.html"><i class="icon fa fa-circle-o"></i> <font face="微軟正黑體">服務對象/項目</font></a></li>
+            <li><a class="treeview-item" href="index_log.html"><i class="icon fa fa-circle-o"></i>「自動消毒櫃」佈點地圖</a></li>
+  
+          </ul>
+        </li>
+        <li><a class="app-menu__item" href="upload.html"><i class="app-menu__icon fa fa-hand-o-right"></i><span class="app-menu__label"><font face="微軟正黑體">出租物品吧!</font></span></a></li>
+        <li><a class="app-menu__item" href="goods.html"><i class="app-menu__icon fa fa-hand-o-right"></i><span class="app-menu__label"><font face="微軟正黑體">租借物品吧!</font></span></a></li>
+        <li><a class="app-menu__item" href="personal.html"><i class="app-menu__icon fa fa-user-circle-o"></i><span class="app-menu__label"><font face="微軟正黑體">個人資訊</font></span></a></li>
+        
+      </ul>
+    </aside>
+    <main class="app-content">
+        <div class="bs-component">
+          <ul class="nav nav-tabs">
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><font size="4" id="gender1">女裝</font></a>
+              <div class="dropdown-menu">
+               <a class="dropdown-item" onclick="setgender('female', '女裝')">女裝</a>
+               <a class="dropdown-item" onclick="setgender('male', '男裝')">男裝</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><font size="4" id="category1">上衣</font></a>
+              <div class="dropdown-menu">
+               <a class="dropdown-item" onclick="setcategory('short', '上衣')">上衣</a>
+               <a class="dropdown-item" onclick="setcategory('pants', '下著')">下著</a>
+               <a class="dropdown-item" onclick="setcategory('dress', '洋裝')">洋裝</a>
+               <a class="dropdown-item" onclick="setcategory('shose', '鞋子')">鞋子</a>
+               <a class="dropdown-item" onclick="setcategory('skirt', '裙子')">裙子</a>
+               <a class="dropdown-item" onclick="setcategory('bag', '包包')">包包</a>
+               <a class="dropdown-item" onclick="setcategory('bracelet', '飾品')">飾品</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      
+        <div class="col-md-12">
+          <div class="album py-5 bg-light">
+            <div class="container">
+              <div class="row" id="product">
+              </div>
+            </div>
+          </div>
+        </div>  
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <!-- Page specific javascripts-->
+    <!-- Google analytics script-->
+    <script type="text/javascript">
+      if(document.location.hostname == 'pratikborsadiya.in') {
+      	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      	ga('create', 'UA-72504830-1', 'auto');
+      	ga('send', 'pageview');
+      }
+    </script>
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyAFQ229Rdz3lMMDXl8lKzs4gO_pfh-JH3o",
+        authDomain: "hackathon-7e6e5.firebaseapp.com",
+        databaseURL: "https://hackathon-7e6e5.firebaseio.com",
+        projectId: "hackathon-7e6e5",
+        storageBucket: "hackathon-7e6e5.appspot.com",
+        messagingSenderId: "958614532541",
+        appId: "1:958614532541:web:284f4fcf1d48250f7b22d4",
+        measurementId: "G-SWSGNCDFN5"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+      var db = firebase.firestore();
+        
+      var account = window.sessionStorage.getItem("account");
+      
+      if(window.localStorage.getItem("gender") != null){
+          var gen = window.localStorage.getItem("gender");
+          var cate = window.localStorage.getItem("category");
+          var cgen = window.localStorage.getItem("cgender");
+          var ccate = window.localStorage.getItem("ccategory");
+          document.getElementById("gender1").textContent= cgen; 
+          document.getElementById("category1").textContent= ccate; 
+      }else{
+          window.localStorage.setItem("gender", "female");
+          window.localStorage.setItem("cgender", "女裝");
+          window.localStorage.setItem("category", "short");
+          window.localStorage.setItem("ccategory", "上衣");
+          document.getElementById("gender1").textContent= "女裝"; 
+          document.getElementById("category1").textContent= "上衣";      
+      }
+        
+      var gender = window.localStorage.getItem("gender");
+      var category = window.localStorage.getItem("category");
+      
+      
+      if(window.localStorage.getItem("search_text") != null){
+          var search_text = window.localStorage.getItem("search_text");
+          document.getElementById("search__input").setAttribute("value", search_text);
+      }
+        
+      var ref = db.collection('product').doc(gender).collection(category);    
+      ref.get().then(querySnapshot => {
+          querySnapshot.forEach(doc => { 
+            window.localStorage.setItem("each_id", doc.id);
+            var doc_name = window.localStorage.getItem("each_id");
+              
+            if(window.localStorage.getItem("search_text")!=null){ //沒有符合字串就跳過
+                
+                var n = doc.data().name.search(window.localStorage.getItem("search_text"));
+                if(n == -1){
+                    return;
+                }else{}
+            }
+              
+              
+            var picture = doc.data().picture;
+            var price = doc.data().price;
+            var t = document.createElement("div");
+            var t1 = document.createElement("div");
+            var t11 = document.createElement("a"); 
+            var t111 = document.createElement("img"); 
+            var t112 = document.createElement("div"); 
+            var t1121 = document.createElement("div");
+            var t11211 = document.createElement("p");
+            var t11212 = document.createElement("p"); 
+            var t1122 = document.createElement("div");
+            var t11221 = document.createElement("div");
+            var t112211 = document.createElement("p");
+            var t12 = document.createElement("a");
+            var t121 = document.createElement("img");
+              
+            t.setAttribute("class", "col-md-3");
+              
+            t1.setAttribute("class", "card");
+            t1.classList.add("mb-4");
+            t1.classList.add("shadow-sm");
+              
+            t11.setAttribute("href", "goods-introduction.html");
+            t11.onclick = function (){catch_id(doc.id);};
+            
+            t111.setAttribute("src", picture);
+            t111.setAttribute("width", "100%");
+              
+            t112.setAttribute("class", "card-body");
+              
+            t1121.setAttribute("class", "row");
+            t1121.style.marginLeft = "0px";
+              
+            t11211.setAttribute("class", "card-text")
+            t11211.style.marginRight = "10px";
+            t11211.textContent = doc.data().name;
+              
+            t11212.setAttribute("class", "card-text")
+            t11212.textAlign = "right";
+            t11212.textContent = doc.data().size;
+            
+            t1122.setAttribute("class", "d-flex");
+            t1122.classList.add("justify-content-between");
+            t1122.classList.add("align-items-center");
+              
+            t11221.setAttribute("class", "btn-group");
+              
+            t112211.textContent = doc.data().price;
+              
+            t12.setAttribute("href", "#");
+            t12.onclick = function() { heart(doc.id); };
+              
+            t121.setAttribute("src", "img/heart_white.png");
+            t121.setAttribute("width", "10%");
+            t121.setAttribute("style", "float: right; margin-right:20px; margin-top: -35px");
+            t121.setAttribute("id", doc_name);
+              
+            t11221.append("NT$", t112211);
+            t1122.append(t11221);
+            t1121.append(t11211, t11212)
+            t112.append(t1121, t1122);
+            t11.append(t111, t112);
+            t12.append(t121);
+            t1.append(t11, t12);
+            t.append(t1);
+              
+            document.getElementById("product").append(t);
+            
+            var ref = db.collection('product').doc(gender).collection(category).doc(doc_name).collection('heart');
+            
+            ref.get().then(querySnapshot => {
+              querySnapshot.forEach(doc => {  
+              var hearter = doc.data().hearter;
+              if(hearter == account){
+                document.getElementById(doc_name).src = "img/heart.png";
+              }
+            });
+           });
+          }); 
+        });
+         
+    </script>
+    <script>
+      function setgender(gen, cgen){
+          window.localStorage.setItem("gender", gen);
+          window.localStorage.setItem("cgender", cgen);
+          window.location.reload();
+      } 
+      function setcategory(cate, ccate){
+          window.localStorage.setItem("category", cate);
+          window.localStorage.setItem("ccategory", ccate);
+          window.location.reload();
+      }
+      function catch_id(id){
+          window.localStorage.setItem("doc_name", id);
+          window.location.href = "goods-introduction.php"
+      }
+      function heart(id){
+          var check = document.getElementById(id).getAttribute("src");
+          if(check == "img/heart_white.png"){ //按愛心
+              db.collection('product').doc(gender).collection(category).doc(id).collection('heart').doc().set({
+                 hearter: account,
+              })
+                
+          }
+          else if(check == "img/heart.png"){ //收回愛心
+              var ref = db.collection('product').doc(gender).collection(category).doc(id).collection('heart');
+              var doc_name_heart = "";
+              ref.get().then(querySnapshot => { //取得愛心的文件名稱
+                querySnapshot.forEach(doc => {
+                    if(doc.data().hearter == account){
+                        doc_name_heart = doc._E.path.segments[10];
+                    }
+                    
+                });
+                var ref = db.collection('product').doc(gender).collection(category).doc(id).collection('heart').doc(doc_name_heart);
+
+                ref.delete().then(function() {
+                    console.log('Document successfully deleted!');
+                }).catch(function(error) {
+                    console.error('Error removing document: ', error)
+                })
+             });
+          }
+          setTimeout("window.history.go(0)",500); //過0.5秒後重新載入頁面
+      }
+      function search(){//查詢關鍵字
+        var search_prom = document.getElementById("search__input").value;
+        window.localStorage.setItem("search_text", search_prom);
+        window.location.reload();
+      }
+    </script>
+    
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+    <script>
+	
+		 var firebaseConfig = {
+        apiKey: "AIzaSyAFQ229Rdz3lMMDXl8lKzs4gO_pfh-JH3o",
+        authDomain: "hackathon-7e6e5.firebaseapp.com",
+        databaseURL: "https://hackathon-7e6e5.firebaseio.com",
+        projectId: "hackathon-7e6e5",
+        storageBucket: "hackathon-7e6e5.appspot.com",
+        messagingSenderId: "958614532541",
+        appId: "1:958614532541:web:284f4fcf1d48250f7b22d4",
+        measurementId: "G-SWSGNCDFN5"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+		
+		
+      var db = firebase.firestore();
+	
+	  var ref = db.collection('user').doc(account);
+      ref.onSnapshot(doc => { 
+		  var nickname = doc.data().nickname;
+		  var picture = doc.data().picture;
+		  console.log(picture);
+		  if(picture != null){ //如果有圖片才顯示
+            document.getElementById('picture').src = picture;
+        }
+		   document.getElementById('nickname').textContent = nickname;
+		  });
+	  
+	</script>
+   	<script>
+	if(window.sessionStorage.getItem("account") == null){ //是否登入
+        window.location.href="../index.html";
+      }   
+	</script>
+  
+  
+  <script>
+        function logout(){//登出
+            window.sessionStorage.setItem("account", null);
+            window.localStorage.clear();
+            
+            window.location.href = "../index.html";
+      }  
+  </script>
+  
+  </body>
+</html>

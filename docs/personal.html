@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+   
+    <title>個人資訊</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
+    
+  </head>
+  <body class="app sidebar-mini rtl">
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="index_log.html"><b>借 吧  !</b></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <li class="app-search">
+          <input class="app-search__input" type="search" placeholder="搜尋">
+          <button class="app-search__button"><i class="fa fa-search"></i></button>
+        </li>
+     
+        
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right">
+            <li><a class="dropdown-item" href="personal.html">
+				<i class="fa fa-user fa-lg"></i><font face="微軟正黑體"> 個人資訊</font></a></li>
+            <li><a class="dropdown-item" onclick="logout()">
+				<i class="fa fa-sign-out fa-lg"></i><font face="微軟正黑體">登出</font></a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+		
+      <div class="app-sidebar__user"><img id="picture" class="app-sidebar__user-avatar" width="35%" alt="User Image">
+        <div>
+         <font face="微軟正黑體">
+          <b><p class="app-sidebar__user-name" id="nickname"></p></b>
+          <p class="app-sidebar__user-designation">開始借吧~</p>
+			</font>
+        </div>
+      </div>
+       
+      <ul class="app-menu">
+        <li><a class="app-menu__item" href="index_log.html"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label"><font face="微軟正黑體">首頁</font></span></a></li>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users "></i><span class="app-menu__label"><font face="微軟正黑體">關於「借吧!」</font></span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="index_log.html"><i class="icon fa fa-circle-o"></i><font face="微軟正黑體">「借吧!」發想點</font></a></li>
+            <li><a class="treeview-item" href="index_log.html"><i class="icon fa fa-circle-o"></i> <font face="微軟正黑體">服務對象/項目</font></a></li>
+            <li><a class="treeview-item" href="index_log.html"><i class="icon fa fa-circle-o"></i>「自動消毒櫃」佈點地圖</a></li>
+  
+          </ul>
+        </li>
+        <li><a class="app-menu__item" href="upload.html"><i class="app-menu__icon fa fa-hand-o-right"></i><span class="app-menu__label"><font face="微軟正黑體">出租物品吧!</font></span></a></li>
+        <li><a class="app-menu__item" href="goods.html"><i class="app-menu__icon fa fa-hand-o-right"></i><span class="app-menu__label"><font face="微軟正黑體">租借物品吧!</font></span></a></li>
+        <li><a class="app-menu__item" href="personal.html"><i class="app-menu__icon fa fa-user-circle-o"></i><span class="app-menu__label"><font face="微軟正黑體">個人資訊</font></span></a></li>
+        
+      </ul>
+    </aside>
+    <main class="app-content">
+      <div class="app-title">
+        <div>
+			<h1><i class="fa fa-address-card"></i><font face="微軟正黑體"> 個人資料</font></h1>
+<!--          <a class="btn btn-info" id="demoSwal" href="#">Sample Alert</a>-->
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="#">回首頁</a></li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-3">
+          <a class="widget-small warning coloured-icon" href="buyer.html"><i class="icon fa fa-dropbox fa-3x"></i>
+            <div class="info">
+				<h4><font face="微軟正黑體"><b>租借中</b></font></h4>
+              <p><b id="nottake"></b></p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <a class="widget-small danger coloured-icon" href="seller.html"><i class="icon fa fa-inbox fa-3x"></i>
+            <div class="info">
+				<h4><font face="微軟正黑體"><b>借出中</b></font></h4>
+              <p><b id="notput"></b></p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6">
+          <div class="tile"  style="height: 119%">
+			  <h3 class="tile-title"><font face="微軟正黑體">總交易評價</font></h3>
+            <div class="row">
+               <h6><i class="fa fa-circle" aria-hidden="true" style="color: #46BFBD; margin: 5px; margin-left: 15px"></i>好評</h6>
+               <h6><i class="fa fa-circle" aria-hidden="true" style="color: #F7464A; margin: 5px"></i>負評</h6>
+            </div>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="pieChartDemo"></canvas>
+            </div>
+          </div>
+         </div>
+      </div>
+        <div class="col-md-6" style="margin-top: -30%; margin-left: -10px">
+          <div class="tile">
+			  <h3 class="tile-title"><font face="微軟正黑體">個人資料</font></h3>
+              <div class="row">
+                <div class="tile-body">
+                 <form class="form-horizontal" action="account_manager.php"><!-- ***************************************************************************-->
+                    <div class="form-group row">
+                      <font style="margin-left: 10%; margin-top: 5px">帳號</font>
+                      <div class="col-md-5">
+                        <input class="form-control" id="email" type="text" readonly>
+                      </div>
+                       <font style="margin-top: 5px">暱稱</font>
+                      <div class="col-md-4">
+                        <input class="form-control" id="nickname1" type="text" readonly>
+                        <button class="btn btn-link" type="button" data-toggle="modal" data-target="#change_nickname"><font>修改暱稱</font></button>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <font style="margin-left: 10%; margin-top: 5px">密碼</font>
+                      <div class="col-md-4">
+                        <input class="form-control" id="password" type="password" readonly>
+                        <button class="btn btn-link" type="button" data-toggle="modal" data-target="#change_password"><font>修改密碼</font></button>
+                      </div>
+                      <font style="margin-top: 5px">電話</font>
+                      <div class="col-md-5">
+                        <input class="form-control" id="phone" type="text" readonly>
+                        <button class="btn btn-link" type="button" data-toggle="modal" data-target="#change_phone"><font>修改電話</font></button>
+                      </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                      <font style="margin-left: 10%; margin-top: 5px">頭貼</font>
+                      <div class="col-md-6">
+                        <input class="form-control" id="visa" name='picture' type="file" accept="image/*">
+                        <div class="progress">
+                          <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style=" float: right; width: 0%"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                       <button class="btn btn-primary" style="float:right;margin-bottom:10px" type="button" id="send">更換</button>
+                      </div>
+                    </div>
+                    <font color="blue" id="Visa" style="margin-left: 10%; margin-top: 5px"></font>
+                  </form>
+                </div>
+                </div>
+              </div>
+            </div>
+      
+      <div class="modal fade" id="change_password">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body" >       
+                 <br>
+                 <div class="form-group row">
+                   <label class="control-label col-md-4">
+                       <font>請輸入舊的密碼:</font>
+                       <font color="red" id="old_password"></font>
+                   </label>
+                   <div class="col-md-7">
+                     <input class="form-control" id="Old_password" type="password" placeholder="Old Password">
+                   </div>
+                 </div>
+                 <div class="form-group row">
+                   <label class="control-label col-md-4">
+                       <font>請輸入新的密碼:</font>
+                       <font color="red" id="new_password_one"></font>
+                   </label>
+                   <div class="col-md-7">
+                     <input class="form-control" id="New_password_one" type="password" placeholder="New Password">
+                   </div>
+                 </div>
+                 <div class="form-group row">
+                   <label class="control-label col-md-4">
+                       <font>請輸入確認密碼:</font>
+                       <font color="red" id="new_password_two"></font>
+                   </label>
+                   <div class="col-md-7">
+                     <input class="form-control" id="New_password_two" type="password" placeholder="New Password">
+                   </div>
+                 </div>
+              </div>
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" id="password_ok" class="btn btn-primary" onclick="change_password();">確定</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--*************************************更改密碼END***************************************-->
+
+        <!--*************************************更改暱稱START***************************************-->
+        <div class="modal fade" id="change_nickname">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body" >       
+                 <br>
+                 <div class="form-group row">
+                   <label class="control-label col-md-4">
+                       <font>請輸入新的暱稱:</font>
+                       <font color="red" id="new_nickname"></font>
+                   </label>
+                   <div class="col-md-7">
+                     <input class="form-control" id="New_nickname" type="text" placeholder="New Nick_Name">
+                   </div>
+                 </div>
+              </div>
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" id="nickname_ok" class="btn btn-primary" onclick="change_nickname();">確定</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--*************************************更改暱稱END***************************************-->
+
+        <!--*************************************更改手機號碼START***************************************-->
+        <div class="modal fade" id="change_phone">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body" >       
+                 <br>
+                 <div class="form-group row">
+                   <label class="control-label col-md-3">
+                       <font>請輸入新的手機號碼:</font>
+                       <font color="red" id="new_phone"></font>
+                   </label>
+                   <div class="col-md-8">
+                     <input class="form-control" id="New_phone" type="text" placeholder="New Phonenumber">
+                   </div>
+                 </div>
+              </div>
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" id="phone_ok" class="btn btn-primary" onclick="change_phone();">確定</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <!-- Page specific javascripts-->
+    <script type="text/javascript" src="js/plugins/chart.js"></script>
+    <script type="text/javascript">   
+      var firebaseConfig = {
+            apiKey: "AIzaSyAFQ229Rdz3lMMDXl8lKzs4gO_pfh-JH3o",
+            authDomain: "hackathon-7e6e5.firebaseapp.com",
+            databaseURL: "https://hackathon-7e6e5.firebaseio.com",
+            projectId: "hackathon-7e6e5",
+            storageBucket: "hackathon-7e6e5.appspot.com",
+            messagingSenderId: "958614532541",
+            appId: "1:958614532541:web:284f4fcf1d48250f7b22d4",
+            measurementId: "G-SWSGNCDFN5"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          firebase.analytics();
+          var db = firebase.firestore();
+          var account = window.sessionStorage.getItem("account");    
+          var ref = db.collection('user'); 
+          var good = 0;
+          var bad = 0;
+          var tot = good + bad;
+          ref.get().then(querySnapshot => {
+              querySnapshot.forEach(doc => { 
+                if(doc.id == account){
+                    good = doc.data().good;
+                    bad = doc.data().bad;
+                    tot = good+bad;
+                    var pdata = [
+                        {
+                            value: good,
+                            color: "#46BFBD",
+                            highlight: "#5AD3D1",
+                            label: "好評"
+                        },
+                        {
+                            value: bad,
+                            color:"#F7464A",
+                            highlight: "#FF5A5E",
+                            label: "負評"
+                        }
+                      ]
+                    var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+                    var pieChart = new Chart(ctxp).Pie(pdata);
+                    document.getElementById("email").value= account; 
+                    document.getElementById("nickname1").value= doc.data().nickname; 
+                    document.getElementById("password").value= doc.data().password; 
+                    document.getElementById("phone").value= doc.data().phonenumber; 
+                    document.getElementById("nottake").textContent= doc.data().nottake; 
+                    document.getElementById("notput").textContent= doc.data().notput; 
+                }
+                }); 
+            });  
+            function change_nickname(){
+                var nickname = document.getElementById("New_nickname").value;
+                if(!nickname){
+                    document.getElementById("new_nickname").innerHTML="&nbsp&nbsp&nbsp此欄位不得為空";
+                }
+                else{
+                    document.getElementById("new_nickname").innerHTML="";
+                    db.collection("user").doc(account).update({
+                        nickname: nickname
+                    })
+                    .then(() => console.log('Document successfully updated!'))
+
+                    document.getElementById("nickname_ok").setAttribute("data-dismiss", "modal");
+                    setTimeout("location.href='personal.html'",500);
+                }
+            } 
+            function change_password(){
+                var password = document.getElementById("password").value;
+                var old_password = document.getElementById("Old_password").value;
+                var new_password_one = document.getElementById("New_password_one").value;
+                var new_password_two = document.getElementById("New_password_two").value;
+
+                if(!old_password || !new_password_one || !new_password_two || password != old_password || new_password_one != new_password_two){
+                    if(!old_password){
+                        document.getElementById("old_password").innerHTML="&nbsp&nbsp&nbsp此欄位不得為空";
+                    }
+                    else if(password != old_password){
+                        document.getElementById("old_password").innerHTML="&nbsp&nbsp&nbsp舊的密碼不正確";
+                    }
+                    else{
+                        document.getElementById("old_password").innerHTML="";
+                    }
+
+                    if(!new_password_one){
+                        document.getElementById("new_password_one").innerHTML="&nbsp&nbsp&nbsp此欄位不得為空";
+                    }
+                    else{
+                        document.getElementById("new_password_one").innerHTML="";
+                    }
+
+                    if(!new_password_two){
+                        document.getElementById("new_password_two").innerHTML="&nbsp&nbsp&nbsp此欄位不得為空";
+                    }
+                    else if(new_password_one != new_password_two){
+                       document.getElementById("new_password_two").innerHTML="&nbsp&nbsp&nbsp確認密碼不正確";
+                    }
+                    else{
+                        document.getElementById("new_password_two").innerHTML="";
+                    }
+                }
+                else {
+                    db.collection("user").doc(account).update({
+                        password: new_password_one
+                    })
+                    .then(() => console.log('Document successfully updated!'))
+
+                    document.getElementById("password_ok").setAttribute("data-dismiss", "modal");
+                    setTimeout("location.href='personal.html'",500);
+                }
+            }
+            function change_phone(){
+                var phone = document.getElementById("New_phone").value;
+                if(!phone){
+                    document.getElementById("new_phone").innerHTML="&nbsp&nbsp&nbsp此欄位不得為空";
+                }
+                else{
+                    document.getElementById("new_phone").innerHTML="";
+                    db.collection("user").doc(account).update({
+                        phonenumber: phone
+                    })
+                    .then(() => console.log('Document successfully updated!'))
+                                  
+                    document.getElementById("phone_ok").setAttribute("data-dismiss", "modal");
+                    setTimeout("location.href='personal.html'",500);
+                }
+            }
+    //**************************讀照片START**************************
+        var files = [];
+            document.getElementById("visa").addEventListener("change", function(e) {
+              files = e.target.files;
+              for (let i = 0; i < files.length; i++) {
+                console.log(files[i]);
+              }
+            });
+
+            document.getElementById("send").addEventListener("click", function() {
+              var account = '123@gmail.com';
+
+              //checks if files are selected
+              if (files.length != 0) {
+                //Loops through all the selected files
+                for (let i = 0; i < files.length; i++) {
+                  //create a storage reference
+                  var storage = firebase.storage().ref(account+'/'+files[i].name);
+
+                  //upload file
+                  var upload = storage.put(files[i]);
+
+                  //update progress bar
+                  upload.on(
+                    "state_changed",
+                    function progress(snapshot) {
+                      var percentage =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        document.getElementById("progress").setAttribute("style", "width:"+percentage+"%");
+                    },
+
+                    function error() {
+                      alert("error uploading file");
+                    },
+
+                    function complete() {
+                      getFileUrl(files[i].name);//呼叫function getFileUrl(filename)
+                      document.getElementById("Visa").innerHTML = `${files[i].name} 更改成功！ `;
+                    }
+                  );
+                }
+              } 
+            });
+
+            function getFileUrl(filename) {
+              //create a storage reference
+              var account = '123@gmail.com';
+              var storage = firebase.storage().ref(account+'/'+filename);
+
+              //拿到url
+              storage
+                .getDownloadURL()
+                .then(function(url) {
+                  console.log(url);
+                  window.localStorage.setItem("visa", url);//寫到window裡面
+                  upload_visa();
+                })
+                .catch(function(error) {
+                });
+            }
+        //**************************讀照片END**************************
+           function upload_visa(){
+                var visa = window.localStorage.getItem("visa");
+                var account = '123@gmail.com';
+
+                db.collection("user").doc(account).update({
+                    picture: visa
+                }),{ merge: true }
+
+                .then(() => console.log('Document successfully written!')) //讓他開始執行
+                .catch(error => console.error('Error writing document: ', error))
+
+                window.localStorage.removeItem("visa");
+            }
+      </script>
+       
+    <!-- Google analytics script-->
+    <script type="text/javascript">
+      if(document.location.hostname == 'pratikborsadiya.in') {
+      	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      	ga('create', 'UA-72504830-1', 'auto');
+      	ga('send', 'pageview');
+      }
+    </script>
+    
+     <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+    <script>
+	
+		 var firebaseConfig = {
+        apiKey: "AIzaSyAFQ229Rdz3lMMDXl8lKzs4gO_pfh-JH3o",
+        authDomain: "hackathon-7e6e5.firebaseapp.com",
+        databaseURL: "https://hackathon-7e6e5.firebaseio.com",
+        projectId: "hackathon-7e6e5",
+        storageBucket: "hackathon-7e6e5.appspot.com",
+        messagingSenderId: "958614532541",
+        appId: "1:958614532541:web:284f4fcf1d48250f7b22d4",
+        measurementId: "G-SWSGNCDFN5"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+		
+		
+      var db = firebase.firestore();
+	  var ref = db.collection('user').doc(account);
+      ref.onSnapshot(doc => { 
+		  var nickname = doc.data().nickname;
+		  var picture = doc.data().picture;
+		  console.log(picture);
+		  if(picture != null){ //如果有圖片才顯示
+            document.getElementById('picture').src = picture;
+        }
+		   document.getElementById('nickname').textContent = nickname;
+		  });
+	  
+	</script>
+   	<script>
+	if(window.sessionStorage.getItem("account") == null){ //是否登入
+        window.location.href="../index.html";
+      }   
+	</script>
+  
+  
+  <script>
+        function logout(){//登出
+            window.sessionStorage.setItem("account", null);
+            window.localStorage.clear();
+            
+            window.location.href = "../index.html";
+      }  
+  </script>
+  </body>
+</html>
